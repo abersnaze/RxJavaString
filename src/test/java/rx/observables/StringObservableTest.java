@@ -147,6 +147,26 @@ public class StringObservableTest {
     }
 
     @Test
+    public void testSplitOnTooManyEmpty() {
+        String[] expected = new String[130];
+        Arrays.fill(expected, "");
+        expected[129] = "a";
+        testSplit(":::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::a", ":", 0, expected);
+    }
+
+    @Test
+    public void testSplitOnTooMany() {
+        String[] expected = new String[130];
+        Arrays.fill(expected, "a");
+        testSplit("a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a:a", ":", 0, expected);
+    }
+
+    @Test
+    public void testSplitOnTooFew() {
+        testSplit("message", ":", 0, Observable.just("", "", "", "asdf"), "asdf");
+    }
+
+    @Test
     public void testSplitOnEmptyStream() {
         assertEquals(0, (int) StringObservable.split(Observable.<String> empty(), "\n").count()
                 .toBlocking().single());
